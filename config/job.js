@@ -54,11 +54,10 @@ module.exports = {
       module.exports.sendToDelighted(record)
     }
     else {
-      const accountQuery = `SELECT name FROM Account WHERE Id = '${record.AccountId}'`
-      conn.query(accountQuery, (err, result) => {
-        if (err) send(err)
-        record.accountName = result.records[0].Name
-        module.exports.sendToDelighted(record)
+      conn.query(`SELECT name FROM Account WHERE Id = '${record.AccountId}'`, (err, result) => {
+      if (err) console.log(err);
+      record.accountName = result.records[0].Name
+      module.exports.sendToDelighted(record)
       })
     }
   },
@@ -91,8 +90,8 @@ module.exports = {
       Id: record.Id,
       Reminders__c: record.Reminders__c === null || 0 ? 1 : record.Reminders__c + 1,
     }, (err, ret) => {
-      if (err || !ret.success) return errors = [...errors, err]
-      else return success = [...success, ret.id]
+        if (err || !ret.success) return module.exports.errors = [...module.exports.errors, err]
+        else return module.exports.success = [...module.exports.success, ret.id]
     })
   }
 }
