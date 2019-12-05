@@ -2,7 +2,7 @@ const jsforce = require('jsforce');
 const org = new jsforce.Connection();
 const delighted = require('delighted')(process.env.DELIGHTED_API_KEY);
 
-const { SF_USERNAME, SF_PASSWORD } = process.env
+const { SF_PASSWORD, SF_USERNAME } = process.env
 
 module.exports = {
   conn: '',
@@ -95,13 +95,7 @@ module.exports = {
     })
   },
 
-  createLead: async () => {
-    const lead = {
-      LastName: 'RubenTest',
-      Company: 'RedCarrots',
-      Email: 'ruben@redcarrots.be'
-    }
-
+  createLead: async (lead) => {
     await conn.sobject("Lead").create(lead, function (err, ret) {
       if (err || !ret.success) return err
       return ret.id
