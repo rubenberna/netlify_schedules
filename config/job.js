@@ -93,5 +93,18 @@ module.exports = {
         if (err || !ret.success) return module.exports.errors = [...module.exports.errors, err]
         else return module.exports.success = [...module.exports.success, ret.id]
     })
+  },
+
+  createLead: async () => {
+    const lead = {
+      LastName: 'RubenTest',
+      Company: 'RedCarrots',
+      Email: 'ruben@redcarrots.be'
+    }
+
+    await conn.sobject("Lead").create(lead, function (err, ret) {
+      if (err || !ret.success) return err
+      return ret.id
+    })
   }
 }
