@@ -1,6 +1,7 @@
 const jsforce = require('jsforce');
 const org = new jsforce.Connection();
-const delighted = require('delighted')(process.env.DELIGHTED_API_KEY);
+const delighted = require('delighted')(process.env.DELIGHTED_API_KEY
+);
 
 const { SF_PASSWORD, SF_USERNAME } = process.env
 
@@ -67,8 +68,11 @@ module.exports = {
       email: record.Email,
       name: record.Name,
       properties: { "kantoor": record.accountName }
-    }).then(() => {
-      module.exports.updateNPSInSalesforce(record)
+    }).then(res => {      
+      if (res.survey_scheduled_at) {
+        console.log('success: ', res.id);      
+        module.exports.updateNPSInSalesforce(record)
+      }   
     }, error => console.log(error.type))
   },
 
