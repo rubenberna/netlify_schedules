@@ -1,7 +1,6 @@
 const jsforce = require('jsforce');
 const org = new jsforce.Connection();
-const delighted = require('delighted')(process.env.DELIGHTED_API_KEY
-);
+const delighted = require('delighted')(process.env.DELIGHTED_API_KEY);
 
 const { SF_PASSWORD, SF_USERNAME } = process.env
 
@@ -90,12 +89,14 @@ module.exports = {
   },
 
   updateContractRecord: async record => {
+    console.log("updating");
+    
     await conn.sobject("Contact").update({
       Id: record.Id,
       Reminders__c: record.Reminders__c === null || 0 ? 1 : record.Reminders__c + 1,
     }, (err, ret) => {
-        if (err || !ret.success) return module.exports.errors = [...module.exports.errors, err]
-        else return module.exports.success = [...module.exports.success, ret.id]
+        if (err || !ret.success) console.log("error: ", err);      
+        else console.log("success: ", ret.id);        
     })
   },
 
